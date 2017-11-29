@@ -1,6 +1,8 @@
 from django.test import TestCase
 from .models import Category, Product
 from django.contrib.auth.models import User
+from django.core import mail
+from django.test.utils import override_settings
 
 
 class PMSTestCase(TestCase):
@@ -34,3 +36,11 @@ class PMSTestCase(TestCase):
 
     def test_category_string_representation(self):
         self.assertEqual(str(self.category), self.category.name)
+
+    @override_settings(EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend')
+    def test_send_email(self):
+        mail_sent_success = mail.send_mail('Subject here',
+                                           'Here is the message.',
+                                           '', ['victa2015@gmail.com'],
+                                           fail_silently=False)
+        self.assertEquals(mail_sent_success, 1)
