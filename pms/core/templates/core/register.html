@@ -1,0 +1,13 @@
+<form class="" action=" " method="post" enctype='multipart/form-data' >
+	{%csrf_token%}
+  <h2>Add User</h2>
+	{% include 'core/form_template.html' %}
+	<div class="">
+		<button type="submit" name="button">Submit</button>
+
+	</div>
+
+</form>
+
+
+<a href = {% url 'core:index' %} >Back</a>

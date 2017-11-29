@@ -1,0 +1,23 @@
+{% if object_list %}
+
+	<ul>
+		{%for product in object_list %}
+
+		<li><a href=""></a> {{ product.name}}
+		<form class="" action="{% url 'core:product-delete' product.id %}" method="post">
+			{% csrf_token %}
+			<input type="hidden" name="product_id" value="{{ product.id}}">
+			<button type="submit" name="button">x</button>
+		</form></li>
+		{% endfor %}
+	</ul>
+{% else %}
+	<h3> add some products </h3>
+{% endif %}
+
+
+<p>
+
+<a href = "{% url 'core:product-add'%}" >Add Product</a> |
+
+<a href = "{% url 'core:register'%}" >Register User</a></p>
