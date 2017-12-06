@@ -21,6 +21,7 @@ class PMSTestCase(TestCase):
         request = RequestFactory()
         request.user = self.user
         self.factory = RequestFactory()
+        # self.client = Client()
 
     def test_product_is_created_successfully(self):
         self.assertEqual(self.product.name, "MyProduct")
@@ -44,13 +45,13 @@ class PMSTestCase(TestCase):
     def test_category_string_representation(self):
         self.assertEqual(str(self.category), self.category.name)
 
-    # @override_settings(EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend')
-    # def test_send_email(self):
-    #     mail_sent_success = mail.send_mail('Subject here',
-    #                                        'Here is the message.',
-    #                                        '', ['victa2015@gmail.com'],
-    #                                        fail_silently=False)
-    #     self.assertEquals(mail_sent_success, 1)
+    @override_settings(EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend')
+    def test_send_email(self):
+        mail_sent_success = mail.send_mail('Test subject',
+                                           'Test Generated Mail',
+                                           'shop.victa@gmail.com', ['shop.victa@gmail.com'],
+                                           fail_silently=False)
+        self.assertEquals(mail_sent_success, 1)
 
     def test_user_get_registration_view(self):
         request = self.factory.get(reverse('core:register'))
@@ -66,22 +67,3 @@ class PMSTestCase(TestCase):
         request = self.factory.get(reverse('core:product-add'))
         response = ProductCreate.as_view()(request)
         self.assertEqual(response.status_code, 200)
-
-    # @patch('pms.core.models.Product.save', MagicMock(name="save"))
-    # def test_create_product(self):
-    #
-    #     # Create the request
-    #     data = {
-    #         'name': 'My Product',
-    #         'quantity': 49,
-    #         'category': self.category,
-    #         'price': 5
-    #     }
-    #     request.user = self.user
-    #     request = self.factory.post(reverse('core:product'), data)
-    #     # Get the response
-    #     response = DetailView.as_view()(request)
-    #     self.assertEqual(response.status_code, 302)
-    #     # Check save was called
-    #     self.assertTrue(Product.save.called)
-    #     self.assertEqual(Product.save.call_count, 1)

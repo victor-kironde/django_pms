@@ -9,12 +9,7 @@ from django.views.generic import View
 
 from django.core.mail import send_mail
 from django.conf import settings
-from .async_email import send_email
 import asyncio
-# import aiosmtplib
-
-
-# Class based views
 
 
 class IndexView(generic.ListView):
@@ -32,7 +27,6 @@ class DetailView(generic.DetailView):
 class ProductCreate(CreateView):
     model = Product
     fields = ['name', 'price', 'quantity', 'category']
-    # template_name = 'core/product_form.html'
 
 
 class ProductUpdate(UpdateView):
@@ -59,7 +53,6 @@ class UserFormView(View):
         if form.is_valid():
             user = form.save(commit=False)
 
-            # cleaned data
             username = form.cleaned_data['username']
             firstname = form.cleaned_data['first_name']
             lastname = form.cleaned_data['last_name']
@@ -70,8 +63,6 @@ class UserFormView(View):
 
             email_subject = "Welcome " + str(username)
 
-            # async email logic
-            # REDIRECT TO HOME PAGE BEFORE EMAIL IS SENT
             loop = asyncio.new_event_loop()
             asyncio.set_event_loop(loop)
             loop.run_in_executor(None, send_mail, email_subject,
@@ -80,7 +71,6 @@ class UserFormView(View):
                                  [email])
             loop.close()
 
-            # return user object if credentials are correct.
             user = authenticate(username=username, password=password)
 
             if user is not None:
